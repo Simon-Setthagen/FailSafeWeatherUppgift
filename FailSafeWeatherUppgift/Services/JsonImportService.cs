@@ -37,14 +37,26 @@ public class JsonImportService
                     continue;
                 }
 
+                double temperature = 0;
+                double humidity = 0;
+
+                double.TryParse(
+                    record.Temperature?.ToString(),
+                    out temperature);
+
+                double.TryParse(
+                    record.Humidity?.ToString(),
+                    out humidity);
+
                 WeatherDataPoint dataPoint = new()
                 {
                     StationName = record.StationName,
                     Timestamp = DateTime.Now,
-                    Temperature = 0,
-                    Humidity = 0,
+                    Temperature = temperature,
+                    Humidity = humidity,
                     DataSource = "JSON"
                 };
+
 
                 bool exists = db.WeatherDataPoints.Any(x => x.StationName == dataPoint.StationName);
 
