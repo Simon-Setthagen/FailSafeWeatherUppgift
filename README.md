@@ -2,39 +2,55 @@
 
 ## Beskrivning
 
-FailSafe Weather Monitor är en konsolapplikation utvecklad i C# med Entity Framework Core. Programmet läser in väderdata från en JSON-fil, lagrar informationen i en SQL Server-databas och kan hämta väderdata från ett externt API.
+FailSafe Weather Monitor är en konsolapplikation utvecklad i C\# med Entity Framework Core. Programmet läser in väderdata från en JSON\-fil, lagrar informationen i en SQL Server\-databas och kan hämta väderdata från ett externt API.
 
-Projektet är utvecklat som en del av kursens inlämningsuppgift med fokus på databasutveckling, EF Core, felhantering och grundläggande DevSecOps-principer.
+Projektet är utvecklat som en del av kursens inlämningsuppgift med fokus på databasutveckling, Entity Framework Core, felhantering och grundläggande DevSecOps\-principer.
 
 ## Funktioner
 
-- Importerar väderdata från JSON-fil
+- Importerar väderdata från JSON\-fil
 - Sparar data i databas med Entity Framework Core
-- Loggar felaktiga poster till `bad_data.log`
-- Hämtar väderdata från Open-Meteo API
+- Loggar felaktiga poster till bad\_data.log
+- Hämtar väderdata från Open\-Meteo API
 - Visar statistik över sparad data
 - Konsolmeny byggd med Spectre.Console
 - Använder EF Core Code First och Migrations
+- Förhindrar dubbletter genom kontroll av StationName och Timestamp
 
 ## Tekniker
 
-- C#
-- .NET
+- C\#
+- .NET 11
 - Entity Framework Core
 - SQL Server LocalDB
 - Spectre.Console
-- Open-Meteo API
+- Open\-Meteo API
+
+## Systemkrav
+
+För att köra projektet krävs:
+
+- .NET 11 SDK
+- Visual Studio 2022 eller senare
+- SQL Server LocalDB
+
+Kontrollera installerad .NET\-version:
+
+dotnet \-\-version
+
+Projektet är utvecklat för:
+
+.NET 11.0
 
 ## Databas
 
 Projektet använder Entity Framework Core Code First.
 
-Tabellen skapas med hjälp av migrations:
+Databasen skapas med hjälp av migrations:
 
-```powershell
-Add-Migration InitialCreate
-Update-Database
-```
+Add\-Migration InitialCreate
+
+Update\-Database
 
 Datamodellen består av följande fält:
 
@@ -47,15 +63,13 @@ Datamodellen består av följande fält:
 
 ## Menyalternativ
 
-Programmet innehåller följande funktioner:
-
 ### Import Weather Data
 
-Läser in data från `weather_data.json`, validerar poster och loggar felaktiga rader till `bad_data.log`.
+Läser in data från weather\_data.json, validerar poster, filtrerar bort felaktiga värden och loggar ogiltiga rader till bad\_data.log.
 
 ### Fetch API Data
 
-Hämtar väderdata från Open-Meteo API med hjälp av HttpClient.
+Hämtar väderdata från Open\-Meteo API med hjälp av HttpClient.
 
 ### Show Statistics
 
@@ -70,57 +84,98 @@ Visar:
 
 Avslutar programmet.
 
+## Validering
+
+Programmet använder TryParse() för att validera importerad data.
+
+Följande kontroller utförs:
+
+- Temperatur måste kunna konverteras till numeriskt värde
+- Luftfuktighet måste kunna konverteras till numeriskt värde
+- Tidsstämpel måste kunna konverteras till DateTime
+- StationName får inte vara tom
+
+Felaktiga poster:
+
+- Loggas till bad\_data.log
+- Sparas inte i databasen
+- Får inte krascha applikationen
+
+## Dubbletthantering
+
+Innan en datapunkt sparas i databasen kontrollerar programmet om samma:
+
+- StationName
+- Timestamp
+
+redan existerar i databasen.
+
+Om datapunkten redan finns lagras den inte igen.
+
 ## Felhantering
 
-Programmet använder try-catch vid:
+Programmet använder try\-catch vid:
 
 - Filinläsning
-- API-anrop
+- JSON\-hantering
+- API\-anrop
 
-Felaktiga poster loggas i filen:
+Felaktig data loggas till:
 
-```text
-bad_data.log
-```
+bad\_data.log
 
-för att programmet inte ska krascha vid ogiltig data.
+för att förhindra att programmet kraschar.
 
 ## Projektstruktur
 
-```text
 FailSafeWeatherUppgift
-│
-├── Data
-│   └── WeatherDbContext.cs
-│
-├── Models
-│   ├── WeatherDataPoint.cs
-│   └── WeatherImportRecord.cs
-│
-├── Services
-│   ├── JsonImportService.cs
-│   └── WeatherApiService.cs
-│
-├── Migrations
-│
-├── Program.cs
-├── appsettings.json
-├── weather_data.json
-└── README.md
-```
+
+Data
+
+WeatherDbContext.cs
+
+ Models
+
+WeatherDataPoint.cs
+
+WeatherImportRecord.cs
+
+ Services
+
+JsonImportService.cs
+
+WeatherApiService.cs
+
+Migrations
+
+Program.cs
+
+ appsettings.json
+
+ weather\_data.json
+
+ README.md
 
 ## Installation
 
 1. Klona projektet från GitHub.
-2. Öppna lösningen i Visual Studio.
-3. Kör migrationerna:
+2. Säkerställ att .NET 11 SDK är installerad.
+3. Öppna lösningen i Visual Studio.
+4. Kör migrationerna:
 
-```powershell
-Update-Database
-```
+Update\-Database
 
-4. Starta programmet.
+1. Starta programmet.
+2. Välj önskad funktion från menyn.
 
-## Författare
+## Exempel på funktioner
 
-Simon Setthagen
+Programmet kan:
+
+- Importera väderdata från JSON\-fil
+- Spara data till SQL Server\-databas
+- Hämta väderdata från API
+- Visa statistik över sparad data
+- Logga felaktiga poster
+- Förhindra dubbletter
+
