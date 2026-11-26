@@ -22,7 +22,6 @@ public class JsonImportService
                 if (string.IsNullOrWhiteSpace(record.StationName))
                 {
                     File.AppendAllText("bad_data.log",JsonSerializer.Serialize(record)+ Environment.NewLine);
-
                     rejected++;
                     continue;
                 }
@@ -30,16 +29,20 @@ public class JsonImportService
                 double humidity = 0;
                 double.TryParse(record.Temperature?.ToString(),out temperature);
                 double.TryParse(record.Humidity?.ToString(),out humidity);
+
+                DateTime timestamp;
+                DateTime.TryParse(record.Timestamp,out timestamp);
+
                 WeatherDataPoint dataPoint = new()
                 {
                     StationName = record.StationName,
-                    Timestamp = DateTime.Now,
+                    Timestamp = timestamp,
                     Temperature = temperature,
                     Humidity = humidity,
                     DataSource = "JSON"
                 };
 
-                bool exists = db.WeatherDataPoints.Any(x => x.StationName == dataPoint.StationName);
+                bool exists = db.WeatherDataPoints.Any(x => x.StationName == dataPoint.StationName && x.Timestamp == dataPoint.Timestamp);
 
                 if (!exists)
                 {
