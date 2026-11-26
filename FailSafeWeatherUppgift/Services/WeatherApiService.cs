@@ -4,7 +4,7 @@ namespace FailSafeWeatherUppgift.Services;
 
 public class WeatherApiService
 {
-    public void FetchWeatherData()
+    public void GetWeatherData()
     {
         try
         {

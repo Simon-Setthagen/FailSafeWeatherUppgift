@@ -26,7 +26,7 @@ while (running)
             break;
 
         case "Fetch API Data":
-            apiService.FetchWeatherData();
+            apiService.GetWeatherData();
             break;
 
         case "Show Statistics":
