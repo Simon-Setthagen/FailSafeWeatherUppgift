@@ -1,56 +1,33 @@
-
-using System;
-using FailSafeWeatherUppgift.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
+using FailSafeWeatherUppgift.Models;
 
-#nullable disable
+namespace FailSafeWeatherUppgift.Data;
 
-namespace FailSafeWeatherUppgift.Migrations;
-
-[DbContext(typeof(WeatherDbContext))]
-partial class WeatherDbContextModelSnapshot : ModelSnapshot
+public class WeatherDbContext : DbContext
 {
-    public override string LastMigrationId => "20261125141123_InitialCreate";
+    public DbSet<WeatherDataPoint> WeatherDataPoints { get; set; }
 
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    protected override void OnConfiguring(
+        DbContextOptionsBuilder optionsBuilder)
     {
-#pragma warning disable 612, 618
-        modelBuilder
-            .HasAnnotation("ProductVersion", "11.0.0")
-            .HasAnnotation("Relational:MaxIdentifierLength", 128);
-        SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-        modelBuilder.Entity("FailSafeWeatherUppgift.Models.WeatherDataPoint", b =>
-            {
-                var id = b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+        if (!optionsBuilder.IsConfigured)
+        {
+            string path = Path.Combine(
+                AppContext.BaseDirectory, "appsettings.json");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
+            string json = File.ReadAllText(path);
 
-                b.Property<string>("DataSource")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+            using JsonDocument document = JsonDocument.Parse(json);
 
-                b.Property<double>("Humidity")
-                    .HasColumnType("float");
+            string connectionString = document.RootElement
+                .GetProperty("ConnectionStrings")
+                .GetProperty("DefaultConnection")
+                .GetString()
+                ?? throw new InvalidOperationException(
+                    "Connection string is missing.");
 
-                b.Property<string>("StationName")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<double>("Temperature")
-                    .HasColumnType("float");
-
-                b.Property<DateTime>("Timestamp")
-                    .HasColumnType("datetime2");
-
-                b.HasKey("Id");
-
-                b.ToTable("WeatherDataPoints");
-            });
-#pragma warning restore 612, 618
+            optionsBuilder.UseSqlServer(connectionString);
+        }
     }
 }

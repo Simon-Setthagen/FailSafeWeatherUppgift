@@ -99,7 +99,7 @@ public class JsonImportService
                     rejected++;
                     continue;
                 }
-                bool exists = db.WeatherDataPoints.Any(x =>
+                bool exists = db.WeatherDataPoint.Any(x =>
                                     x.StationName == record.StationName &&
                                     x.Timestamp == timestamp);
 
@@ -118,7 +118,7 @@ public class JsonImportService
                     DataSource = "JSON"
                 };
 
-                db.WeatherDataPoints.Add(dataPoint);
+                db.WeatherDataPoint.Add(dataPoint);
                 db.SaveChanges();
 
                 imported++;
