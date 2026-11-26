@@ -10,7 +10,7 @@ public partial class _20261125141123_InitialCreate : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.CreateTable(
-            name: "WeatherDataPoints",
+            name: "WeatherDataPoint",
             columns: table => new
             {
                 Id = table.Column<int>(type: "int", nullable: false)
@@ -23,13 +23,13 @@ public partial class _20261125141123_InitialCreate : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_WeatherDataPoints", x => x.Id);
+                table.PrimaryKey("PK_WeatherDataPoint", x => x.Id);
             });
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(
-            name: "WeatherDataPoints");
+            name: "WeatherDataPoint");
     }
 }
