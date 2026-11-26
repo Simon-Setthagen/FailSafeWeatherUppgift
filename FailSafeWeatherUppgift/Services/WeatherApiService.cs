@@ -10,11 +10,9 @@ public class WeatherApiService
         {
             HttpClient client = new();
 
-            string url =
-                "https://api.open-meteo.com/v1/forecast?latitude=57.6832&longitude=11.9511&hourly=temperature_2m,relative_humidity_2m";
+            string url = "https://api.open-meteo.com/v1/forecast?latitude=57.6832&longitude=11.9511&hourly=temperature_2m,relative_humidity_2m";
 
-            string result =
-                client.GetStringAsync(url).Result;
+            string result =client.GetStringAsync(url).Result;
 
             Console.WriteLine("API request successful.");
         }

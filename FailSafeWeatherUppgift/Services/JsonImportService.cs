@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 using FailSafeWeatherUppgift.Data;
 using FailSafeWeatherUppgift.Models;
-
 namespace FailSafeWeatherUppgift.Services;
-
 public class JsonImportService
 {
     public void ImportWeatherData()
@@ -12,13 +10,8 @@ public class JsonImportService
         {
             File.WriteAllText("bad_data.log", "");
 
-            string jsonContent =
-                File.ReadAllText("weather_data.json");
-
-            var weatherRecords =
-                JsonSerializer.Deserialize<List<WeatherImportRecord>>
-                (jsonContent);
-
+            string jsonContent = File.ReadAllText("weather_data.json");
+            var weatherRecords = JsonSerializer.Deserialize<List<WeatherImportRecord>>(jsonContent);
             int imported = 0;
             int rejected = 0;
 
@@ -28,26 +21,15 @@ public class JsonImportService
             {
                 if (string.IsNullOrWhiteSpace(record.StationName))
                 {
-                    File.AppendAllText(
-                        "bad_data.log",
-                        JsonSerializer.Serialize(record)
-                        + Environment.NewLine);
+                    File.AppendAllText("bad_data.log",JsonSerializer.Serialize(record)+ Environment.NewLine);
 
                     rejected++;
                     continue;
                 }
-
                 double temperature = 0;
                 double humidity = 0;
-
-                double.TryParse(
-                    record.Temperature?.ToString(),
-                    out temperature);
-
-                double.TryParse(
-                    record.Humidity?.ToString(),
-                    out humidity);
-
+                double.TryParse(record.Temperature?.ToString(),out temperature);
+                double.TryParse(record.Humidity?.ToString(),out humidity);
                 WeatherDataPoint dataPoint = new()
                 {
                     StationName = record.StationName,
@@ -56,7 +38,6 @@ public class JsonImportService
                     Humidity = humidity,
                     DataSource = "JSON"
                 };
-
 
                 bool exists = db.WeatherDataPoints.Any(x => x.StationName == dataPoint.StationName);
 
@@ -69,7 +50,6 @@ public class JsonImportService
             }
 
             db.SaveChanges();
-
             Console.WriteLine($"Imported: {imported}");
             Console.WriteLine($"Rejected: {rejected}");
         }

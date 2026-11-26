@@ -3,10 +3,7 @@ using FailSafeWeatherUppgift.Services;
 using FailSafeWeatherUppgift.Data;
 
 WeatherDbContext db = new();
-
-Console.WriteLine(
-    $"Records in database: {db.WeatherDataPoints.Count()}");
-
+Console.WriteLine($"Records in database: {db.WeatherDataPoints.Count()}");
 JsonImportService importService = new();
 WeatherApiService apiService = new();
 
@@ -14,9 +11,7 @@ bool running = true;
 
 while (running)
 {
-    string choice =
-        AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
+    string choice = AnsiConsole.Prompt(new SelectionPrompt<string>()
                 .Title("FailSafe Weather Monitor")
                 .AddChoices(
                     "Import Weather Data",
@@ -35,19 +30,10 @@ while (running)
             break;
 
         case "Show Statistics":
-
-            Console.WriteLine(
-                $"Total records: {db.WeatherDataPoints.Count()}");
-
-            Console.WriteLine(
-                $"Highest temperature: {db.WeatherDataPoints.Max(x => x.Temperature)}");
-
-            Console.WriteLine(
-                $"Lowest temperature: {db.WeatherDataPoints.Min(x => x.Temperature)}");
-
-            Console.WriteLine(
-                $"Average temperature: {db.WeatherDataPoints.Average(x => x.Temperature)}");
-
+            Console.WriteLine($"Total records: {db.WeatherDataPoints.Count()}");
+            Console.WriteLine($"Highest temperature: {db.WeatherDataPoints.Max(x => x.Temperature)}");
+            Console.WriteLine($"Lowest temperature: {db.WeatherDataPoints.Min(x => x.Temperature)}");
+            Console.WriteLine($"Average temperature: {db.WeatherDataPoints.Average(x => x.Temperature)}");
             break;
 
         case "Exit":

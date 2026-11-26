@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FailSafeWeatherUppgift.Migrations;
 
-/// <inheritdoc />
 public partial class _20261125141123_InitialCreate : Migration
 {
-    /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.CreateTable(
@@ -29,7 +27,6 @@ public partial class _20261125141123_InitialCreate : Migration
             });
     }
 
-    /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(

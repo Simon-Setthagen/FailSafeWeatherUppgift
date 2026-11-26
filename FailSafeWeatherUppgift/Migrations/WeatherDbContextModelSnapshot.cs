@@ -13,9 +13,6 @@ namespace FailSafeWeatherUppgift.Migrations;
 [DbContext(typeof(WeatherDbContext))]
 partial class WeatherDbContextModelSnapshot : ModelSnapshot
 {
-    // If you encounter a merge conflict in the line below, it means you need to
-    // discard one of the migration branches and recreate its migrations on top of
-    // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
     public override string LastMigrationId => "20261125141123_InitialCreate";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
@@ -24,9 +21,7 @@ partial class WeatherDbContextModelSnapshot : ModelSnapshot
         modelBuilder
             .HasAnnotation("ProductVersion", "11.0.0")
             .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
         SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
         modelBuilder.Entity("FailSafeWeatherUppgift.Models.WeatherDataPoint", b =>
             {
                 var id = b.Property<int>("Id")
