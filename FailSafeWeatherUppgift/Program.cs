@@ -3,7 +3,6 @@ using FailSafeWeatherUppgift.Services;
 using FailSafeWeatherUppgift.Data;
 
 WeatherDbContext db = new();
-Console.WriteLine($"Records in database: {db.WeatherDataPoints.Count()}");
 JsonImportService importService = new();
 WeatherApiService apiService = new();
 

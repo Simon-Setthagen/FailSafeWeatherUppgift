@@ -99,9 +99,7 @@ public class JsonImportService
                     rejected++;
                     continue;
                 }
-                bool exists = db.WeatherDataPoints.Any(x =>
-                                    x.StationName == record.StationName &&
-                                    x.Timestamp == timestamp);
+                bool exists = db.WeatherDataPoints.Any( x => x.StationName == record.StationName && x.Timestamp == timestamp);
 
                 if (exists)
                 {
